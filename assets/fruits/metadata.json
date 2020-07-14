@@ -1,0 +1,42 @@
+{
+  "version": "1.0.0",
+  "labels": ["apple", "avocado", "pear"],
+  "images": [
+    {
+      "filename": "apple0.jpg",
+      "labels": ["apple"]
+    },
+    {
+      "filename": "apple1.jpg",
+      "labels": ["apple"]
+    },
+    {
+      "filename": "apple2.jpg",
+      "labels": ["apple"]
+    },
+    {
+      "filename": "avocado0.jpg",
+      "labels": ["avocado"]
+    },
+    {
+      "filename": "avocado1.jpg",
+      "labels": ["avocado"]
+    },
+    {
+      "filename": "avocado2.jpg",
+      "labels": ["avocado"]
+    },
+    {
+      "filename": "pear0.jpg",
+      "labels": ["pear"]
+    },
+    {
+      "filename": "pear1.jpg",
+      "labels": ["pear"]
+    },
+    {
+      "filename": "pear2.jpg",
+      "labels": ["pear"]
+    }
+  ]
+}

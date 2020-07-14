@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 
-const _classes = ["apple", "avocado", "pear"];
+const _labels = ["apple", "avocado", "pear"];
 
 class AppBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: <Widget>[SortingClassesGrid() , ImageToSort()],
+      children: <Widget>[TargetsGrid() , ImageToSort()],
     );
   }
 }
 
-class SortingClassesGrid extends StatefulWidget {
+class TargetsGrid extends StatefulWidget {
   @override
-  _SortingClassesGridState createState() => _SortingClassesGridState();
+  _TargetsGridState createState() => _TargetsGridState();
 }
 
-class _SortingClassesGridState extends State<SortingClassesGrid> {
+class _TargetsGridState extends State<TargetsGrid> {
   static const _portraitCAC = 3;
   static const _landscapeCAC = 5;
 
@@ -26,14 +26,14 @@ class _SortingClassesGridState extends State<SortingClassesGrid> {
       return GridView.count(
         crossAxisCount:
             MediaQuery.of(context).orientation == Orientation.portrait ? _portraitCAC : _landscapeCAC,
-        children: _makeSortingClasses(),
+        children: _makeTargets(),
         physics: NeverScrollableScrollPhysics(),
         shrinkWrap: true,
       );
   }
 
-  List<Widget> _makeSortingClasses() {
-    return _classes.map((s) {
+  List<Widget> _makeTargets() {
+    return _labels.map((s) {
       return DragTarget(
         builder: (context, candidateData, rejectedData) {
           return Image.asset('assets/test_images/$s/0.jpg');
