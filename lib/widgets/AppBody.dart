@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 const _labels = ["apple", "avocado", "pear"];
 
 class AppBody extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
+
+
     return Column(
       children: <Widget>[TargetsGrid() , ImageToSort()],
     );

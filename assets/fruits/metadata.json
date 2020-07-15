@@ -1,6 +1,19 @@
 {
   "version": "1.0.0",
-  "labels": ["apple", "avocado", "pear"],
+  "labels": [
+    {
+      "label": "apple",
+      "representative": "apple0.jpg"
+    },
+    {
+      "label": "avocado",
+      "representative": "avocado0.jpg"
+    },
+    {
+      "label": "pear",
+      "representative": "pear0.jpg"
+    }
+  ],
   "images": [
     {
       "filename": "apple0.jpg",
