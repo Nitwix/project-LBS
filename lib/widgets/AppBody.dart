@@ -42,7 +42,7 @@ class _TargetsGridState extends State<TargetsGrid> {
                 return GridView.count(
                   crossAxisCount:
                   MediaQuery.of(context).orientation == Orientation.portrait ? _portraitCAC : _landscapeCAC,
-                  children: _makeTargets(labels),
+                  children: _makeTargets(labels, context),
                   physics: NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                 );
@@ -56,14 +56,29 @@ class _TargetsGridState extends State<TargetsGrid> {
       );
   }
 
-  List<Widget> _makeTargets(List<LabelMetadata> labels) {
+  List<Widget> _makeTargets(List<LabelMetadata> labels, BuildContext context) {
     return labels.map((l) {
       return DragTarget<DragData>(
         builder: (context, candidateData, rejectedData) {
           return Image.asset('assets/fruits/images/${l.representative}');
         },
-        onWillAccept: (dragData) => dragData.labels.contains(l),
-        onAccept: (dragData) => print("accepted"),
+        onWillAccept: (dragData) {
+          var c = dragData.labels.contains(l.label);
+//          if(!c) {
+//            Scaffold.of(context).showSnackBar(
+//                SnackBar(
+//                  content: Text("Faux!"),
+//                  duration: Duration(microseconds: 400),
+//                ));
+//          }
+          return c;
+        },
+        onAccept: (dragData) => Scaffold.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Correct!"),
+            duration: Duration(microseconds: 400),
+          )
+        ),
       );
     }).toList();
   }
