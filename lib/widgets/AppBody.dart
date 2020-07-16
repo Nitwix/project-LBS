@@ -1,14 +1,11 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'dart:io' show File;
 
 import 'package:project_lbs/backend/Metadata.dart';
+import 'package:project_lbs/util/lists.dart';
 
 class AppBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // TODO Unhandled Exception: Unable to load asset: assets/fruits/metadata.json ???
     var meta = Metadata.fromFutureString(DefaultAssetBundle.of(context).loadString("assets/fruits/metadata.json"));
 
     return Column(
@@ -61,10 +58,12 @@ class _TargetsGridState extends State<TargetsGrid> {
 
   List<Widget> _makeTargets(List<LabelMetadata> labels) {
     return labels.map((l) {
-      return DragTarget(
+      return DragTarget<DragData>(
         builder: (context, candidateData, rejectedData) {
           return Image.asset('assets/fruits/images/${l.representative}');
         },
+        onWillAccept: (dragData) => dragData.labels.contains(l),
+        onAccept: (dragData) => print("accepted"),
       );
     }).toList();
   }
@@ -79,20 +78,16 @@ class ImageToSort extends StatefulWidget {
   _ImageToSortState createState() => _ImageToSortState(metadata);
 }
 
-extension RandomElement<T> on List<T> {
-  T get randomElement{
-    return this[Random().nextInt(this.length)];
-  }
-}
-
 class _ImageToSortState extends State<ImageToSort> {
-  final Future<Metadata> metadata;
+  final Future<Metadata> _futureMetadata;
+  Metadata _metadata;
 
-  _ImageToSortState(this.metadata);
+  ImageMetadata _currentImage;
+
+  _ImageToSortState(this._futureMetadata);
 
   @override
   Widget build(BuildContext context) {
-
     return FutureBuilder<Metadata>(
       builder: (context, snapshot){
         switch(snapshot.connectionState){
@@ -100,15 +95,24 @@ class _ImageToSortState extends State<ImageToSort> {
             return Container();
           case ConnectionState.done:
             if(snapshot.hasData){
-              final rndFilename = snapshot.data.images.randomElement.filename;
+              _metadata ??= snapshot.data;
+              _currentImage = snapshot.data.images.randomElement;
+              final rndFilename = _currentImage.filename;
               final imgPath = "assets/fruits/images/$rndFilename";
               const imgSize = 200.0;
               final image = Image.asset(imgPath, fit: BoxFit.contain, height: imgSize, width: imgSize,);
               return Container(
                 child: Center(
-                  child: Draggable(
+                  child: Draggable<DragData>(
                     child: image,
                     feedback: image,
+                    data: DragData(_currentImage.labels),
+                    onDragCompleted: (){
+                      print("drag completed");
+                      setState(() {
+                        _currentImage = _metadata.images.randomElement;
+                      });
+                    },
                   ),
                 ),
               );
@@ -118,7 +122,13 @@ class _ImageToSortState extends State<ImageToSort> {
             return Container();
         }
       },
-      future: metadata,
+      future: _futureMetadata,
     );
   }
+}
+
+class DragData {
+  final List<String> labels;
+
+  DragData(this.labels);
 }
