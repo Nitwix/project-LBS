@@ -17,11 +17,3 @@
 // The license file can be found in the LICENSE file, at the root of the repo.
 //
 // The author can be contacted by email at nielsnfsmw@gmail.com.
-
-import 'dart:math' show Random;
-
-extension RandomElement<T> on List<T> {
-  T get randomElement{
-    return this[Random().nextInt(this.length)];
-  }
-}
