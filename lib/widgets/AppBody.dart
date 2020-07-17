@@ -26,10 +26,11 @@ import 'package:project_lbs/util/lists.dart';
 class AppBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var meta = Metadata.fromFutureString(DefaultAssetBundle.of(context).loadString("assets/fruits/metadata.json"));
+    var meta = Metadata.fromFutureString(DefaultAssetBundle.of(context)
+        .loadString("assets/fruits/metadata.json"));
 
     return Column(
-      children: <Widget>[TargetsGrid(meta) , ImageToSort(meta)],
+      children: <Widget>[TargetsGrid(meta), ImageToSort(meta)],
     );
   }
 }
@@ -44,53 +45,54 @@ class TargetsGrid extends StatefulWidget {
 
 class _TargetsGridState extends State<TargetsGrid> {
   static const _portraitCAC = 3;
-  static const _landscapeCAC = 5;
+  static const _landscapeCAC = 6;
+  static const _cellsPadding = 30.0;
+
   final Future<Metadata> metadata;
 
   _TargetsGridState(this.metadata);
 
   @override
   Widget build(BuildContext context) {
-      return FutureBuilder<Metadata>(
-        builder: (context, snapshot){
-          switch(snapshot.connectionState){
-            case ConnectionState.waiting:
-              return Container();
-            case ConnectionState.done:
-              if(snapshot.hasData){
-                final labels = snapshot.data.labels;
-                return GridView.count(
-                  crossAxisCount:
-                  MediaQuery.of(context).orientation == Orientation.portrait ? _portraitCAC : _landscapeCAC,
-                  children: _makeTargets(labels, context),
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                );
-              }
-              return Container();
-            default:
-              return Container();
-          }
-        },
-        future: metadata,
-      );
+    return FutureBuilder<Metadata>(
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done &&
+            snapshot.hasData) {
+          final labels = snapshot.data.labels;
+          return GridView.count(
+            crossAxisCount:
+                MediaQuery.of(context).orientation == Orientation.portrait
+                    ? _portraitCAC
+                    : _landscapeCAC,
+            children: _makeTargets(labels, context),
+            physics: NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+          );
+        } else {
+          return Container();
+        }
+      },
+      future: metadata,
+    );
   }
 
-  List<Widget> _makeTargets(List<LabelMetadata> labels, BuildContext context) {
+  static List<Widget> _makeTargets(
+      List<LabelMetadata> labels, BuildContext context) {
     return labels.map((l) {
-      return DragTarget<DragData>(
-        builder: (context, candidateData, rejectedData) {
-          return Image.asset('assets/fruits/images/${l.representative}');
-        },
-        onWillAccept: (dragData) {
-          var c = dragData.labels.contains(l.label);
-          return c;
-        },
-        onAccept: (dragData) => Scaffold.of(context).showSnackBar(
-          SnackBar(
+      return Padding(
+        padding: EdgeInsets.all(_cellsPadding),
+        child: DragTarget<DragData>(
+          builder: (context, candidateData, rejectedData) {
+            return Image.asset('assets/fruits/images/${l.representative}');
+          },
+          onWillAccept: (dragData) {
+            var c = dragData.labels.contains(l.label);
+            return c;
+          },
+          onAccept: (dragData) => Scaffold.of(context).showSnackBar(SnackBar(
             content: Text("Correct!"),
-            duration: Duration(microseconds: 400),
-          )
+            duration: Duration(milliseconds: 200),
+          )),
         ),
       );
     }).toList();
@@ -117,37 +119,37 @@ class _ImageToSortState extends State<ImageToSort> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Metadata>(
-      builder: (context, snapshot){
-        switch(snapshot.connectionState){
-          case ConnectionState.waiting:
-            return Container();
-          case ConnectionState.done:
-            if(snapshot.hasData){
-              _metadata ??= snapshot.data;
-              _currentImage = snapshot.data.images.randomElement;
-              final rndFilename = _currentImage.filename;
-              final imgPath = "assets/fruits/images/$rndFilename";
-              const imgSize = 200.0;
-              final image = Image.asset(imgPath, fit: BoxFit.contain, height: imgSize, width: imgSize,);
-              return Container(
-                child: Center(
-                  child: Draggable<DragData>(
-                    child: image,
-                    feedback: image,
-                    data: DragData(_currentImage.labels),
-                    onDragCompleted: (){
-                      print("drag completed");
-                      setState(() {
-                        _currentImage = _metadata.images.randomElement;
-                      });
-                    },
-                  ),
-                ),
-              );
-            }
-            return Container();
-          default:
-            return Container();
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done &&
+            snapshot.hasData) {
+          _metadata ??= snapshot.data;
+          _currentImage = snapshot.data.images.randomElement;
+          final rndFilename = _currentImage.filename;
+          final imgPath = "assets/fruits/images/$rndFilename";
+          const imgSize = 200.0;
+          final image = Image.asset(
+            imgPath,
+            fit: BoxFit.contain,
+            height: imgSize,
+            width: imgSize,
+          );
+          // TODO is this container wrapper useful ?
+          return Container(
+            child: Center(
+              child: Draggable<DragData>(
+                child: image,
+                feedback: image,
+                data: DragData(_currentImage.labels),
+                onDragCompleted: () {
+                  setState(() {
+                    _currentImage = _metadata.images.randomElement;
+                  });
+                },
+              ),
+            ),
+          );
+        } else {
+          return Container();
         }
       },
       future: _futureMetadata,
