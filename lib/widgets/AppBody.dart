@@ -44,13 +44,13 @@ class TargetsGrid extends StatefulWidget {
 }
 
 class _TargetsGridState extends State<TargetsGrid> {
-  static const _portraitCAC = 3;
+  static const _portraitCAC = 3; // TODO : or 4 ? Needs to work on tablet & phone
   static const _landscapeCAC = 6;
   static const _cellsPadding = 30.0;
 
-  final Future<Metadata> metadata;
+  final Future<Metadata> _futureMetadata;
 
-  _TargetsGridState(this.metadata);
+  _TargetsGridState(this._futureMetadata);
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +72,7 @@ class _TargetsGridState extends State<TargetsGrid> {
           return Container();
         }
       },
-      future: metadata,
+      future: _futureMetadata,
     );
   }
 
@@ -100,15 +100,17 @@ class _TargetsGridState extends State<TargetsGrid> {
 }
 
 class ImageToSort extends StatefulWidget {
-  final Future<Metadata> metadata;
+  final Future<Metadata> _futureMetadata;
 
-  ImageToSort(this.metadata);
+  ImageToSort(this._futureMetadata);
 
   @override
-  _ImageToSortState createState() => _ImageToSortState(metadata);
+  _ImageToSortState createState() => _ImageToSortState(_futureMetadata);
 }
 
 class _ImageToSortState extends State<ImageToSort> {
+  static const _imgSize = 150.0;
+
   final Future<Metadata> _futureMetadata;
   Metadata _metadata;
 
@@ -126,26 +128,22 @@ class _ImageToSortState extends State<ImageToSort> {
           _currentImage = snapshot.data.images.randomElement;
           final rndFilename = _currentImage.filename;
           final imgPath = "assets/fruits/images/$rndFilename";
-          const imgSize = 200.0;
           final image = Image.asset(
             imgPath,
             fit: BoxFit.contain,
-            height: imgSize,
-            width: imgSize,
+            height: _imgSize,
+            width: _imgSize,
           );
-          // TODO is this container wrapper useful ?
-          return Container(
-            child: Center(
-              child: Draggable<DragData>(
-                child: image,
-                feedback: image,
-                data: DragData(_currentImage.labels),
-                onDragCompleted: () {
-                  setState(() {
-                    _currentImage = _metadata.images.randomElement;
-                  });
-                },
-              ),
+          return Center(
+            child: Draggable<DragData>(
+              child: image,
+              feedback: image,
+              data: DragData(_currentImage.labels),
+              onDragCompleted: () {
+                setState(() {
+                  _currentImage = _metadata.images.randomElement;
+                });
+              },
             ),
           );
         } else {

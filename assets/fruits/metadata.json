@@ -12,6 +12,30 @@
     {
       "label": "pear",
       "representative": "pear0.jpg"
+    },
+    {
+      "label": "banana",
+      "representative": "banana0.png"
+    },
+    {
+      "label": "raspberry",
+      "representative": "raspberry0.jpg"
+    },
+    {
+      "label": "strawberry",
+      "representative": "strawberry0.png"
+    },
+    {
+      "label": "banana",
+      "representative": "banana0.png"
+    },
+    {
+      "label": "raspberry",
+      "representative": "raspberry0.jpg"
+    },
+    {
+      "label": "strawberry",
+      "representative": "strawberry0.png"
     }
   ],
   "images": [
@@ -27,6 +51,7 @@
       "filename": "apple2.jpg",
       "labels": ["apple"]
     },
+
     {
       "filename": "avocado0.jpg",
       "labels": ["avocado"]
@@ -39,6 +64,7 @@
       "filename": "avocado2.jpg",
       "labels": ["avocado"]
     },
+
     {
       "filename": "pear0.jpg",
       "labels": ["pear"]
@@ -50,6 +76,33 @@
     {
       "filename": "pear2.jpg",
       "labels": ["pear"]
+    },
+
+    {
+      "filename": "banana0.png",
+      "labels": ["banana"]
+    },
+    {
+      "filename": "banana1.jpg",
+      "labels": ["banana"]
+    },
+
+    {
+      "filename": "raspberry0.jpg",
+      "labels": ["raspberry"]
+    },
+    {
+      "filename": "raspberry1.jpg",
+      "labels": ["raspberry"]
+    },
+
+    {
+      "filename": "strawberry0.png",
+      "labels": ["strawberry"]
+    },
+    {
+      "filename": "strawberry1.jpg",
+      "labels": ["strawberry"]
     }
   ]
 }
