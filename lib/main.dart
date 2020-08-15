@@ -19,29 +19,33 @@
 // The author can be contacted by email at nielsnfsmw@gmail.com.
 
 import 'package:flutter/material.dart';
-import 'widgets/AppBody.dart';
+import 'routes/DatasetSelection.dart';
+import 'routes/Home.dart';
 
 void main() {
   runApp(MyApp());
 }
 
+const appName = "Learn By Sorting";
+
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    const appName = "Learn By Sorting";
     return MaterialApp(
       title: appName,
       theme: ThemeData(
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text(appName),
-        ),
-        body: AppBody(),
-      ),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => Home(appName),
+        '/dataset_selection': (context) => DatasetSelection()
+      },
     );
   }
 }
+
+
+
