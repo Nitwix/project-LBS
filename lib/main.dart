@@ -19,7 +19,7 @@
 // The author can be contacted by email at nielsnfsmw@gmail.com.
 
 import 'package:flutter/material.dart';
-import 'routes/DatasetSelection.dart';
+import 'routes/BrowseDatasets.dart';
 import 'routes/Home.dart';
 
 void main() {
@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => Home(appName),
-        '/dataset_selection': (context) => DatasetSelection()
+        '/browse_datasets': (context) => BrowseDatasets()
       },
     );
   }
