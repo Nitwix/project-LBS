@@ -27,7 +27,7 @@ class AppBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var meta = Metadata.fromFutureString(DefaultAssetBundle.of(context)
-        .loadString("assets/fruits/metadata.json"));
+        .loadString("assets/default_datasets/fruits/metadata.json"));
 
     return Column(
       children: <Widget>[TargetsGrid(meta), ImageToSort(meta)],
@@ -83,7 +83,7 @@ class _TargetsGridState extends State<TargetsGrid> {
         padding: EdgeInsets.all(_cellsPadding),
         child: DragTarget<DragData>(
           builder: (context, candidateData, rejectedData) {
-            return Image.asset('assets/fruits/images/${l.representative}');
+            return Image.asset('assets/fruits/images/${l.representative}'); // TODO needs to be dynamic
           },
           onWillAccept: (dragData) {
             var c = dragData.labels.contains(l.label);
@@ -127,7 +127,7 @@ class _ImageToSortState extends State<ImageToSort> {
           _metadata ??= snapshot.data;
           _currentImage = snapshot.data.images.randomElement;
           final rndFilename = _currentImage.filename;
-          final imgPath = "assets/fruits/images/$rndFilename";
+          final imgPath = "assets/fruits/images/$rndFilename"; // TODO needs to be dynamic
           final image = Image.asset(
             imgPath,
             fit: BoxFit.contain,

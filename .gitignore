@@ -43,4 +43,4 @@ app.*.map.json
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 
 # Ignore assets
-assets/fruits/images
+assets/default_datasets/fruits/images
